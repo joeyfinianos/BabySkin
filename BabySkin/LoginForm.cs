@@ -14,7 +14,6 @@ namespace BabySkin
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
-
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
 
@@ -24,7 +23,6 @@ namespace BabySkin
                 txtUsername.Focus();
                 return;
             }
-
             if (string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please enter password", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -37,14 +35,11 @@ namespace BabySkin
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-
                     string query = "SELECT UserID, FullName FROM Userss WHERE Username = @Username AND Password = @Password";
-
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Username", username);
                         cmd.Parameters.AddWithValue("@Password", password);
-
                         SqlDataReader reader = cmd.ExecuteReader();
 
                         if (reader.Read())
@@ -52,11 +47,15 @@ namespace BabySkin
                             int userId = Convert.ToInt32(reader["UserID"]);
                             string fullName = reader["FullName"].ToString();
 
-                            MessageBox.Show("Welcome, " + fullName + "!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            reader.Close();
+                            conn.Close();
 
-                            txtUsername.Clear();
-                            txtPassword.Clear();
-                            txtUsername.Focus();
+                            this.Hide();
+
+                            DashboardForm dashboard = new DashboardForm(userId, fullName);
+                            dashboard.ShowDialog();
+
+                            this.Close();
                         }
                         else
                         {

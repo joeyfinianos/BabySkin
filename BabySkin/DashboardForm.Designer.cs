@@ -30,24 +30,24 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             sidebarpanel = new Panel();
-            lblogo = new Label();
+            btnLogout = new Button();
             btnDashboard = new Button();
+            lblogo = new Label();
             btnCustomers = new Button();
             btnSessions = new Button();
             btnPayments = new Button();
-            btnLogout = new Button();
             mainPanel = new Panel();
-            lbWelcome = new Label();
-            customerCard = new Panel();
-            lbTotalCustomers = new Label();
-            textBox1 = new TextBox();
-            lblUpcomingSessions = new Label();
-            txtSearch = new TextBox();
             dgvUpcomingSessions = new DataGridView();
+            txtSearch = new TextBox();
+            lblUpcomingSessions = new Label();
+            customerCard = new Panel();
+            tbTotalCustomers = new TextBox();
+            lbTotalCustomers = new Label();
+            lbWelcome = new Label();
             sidebarpanel.SuspendLayout();
             mainPanel.SuspendLayout();
-            customerCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUpcomingSessions).BeginInit();
+            customerCard.SuspendLayout();
             SuspendLayout();
             // 
             // sidebarpanel
@@ -62,16 +62,20 @@
             sidebarpanel.Size = new Size(180, 625);
             sidebarpanel.TabIndex = 0;
             // 
-            // lblogo
+            // btnLogout
             // 
-            lblogo.AutoSize = true;
-            lblogo.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblogo.ForeColor = Color.White;
-            lblogo.Location = new Point(20, 25);
-            lblogo.Name = "lblogo";
-            lblogo.Size = new Size(153, 31);
-            lblogo.TabIndex = 0;
-            lblogo.Text = "🌸 BabySkin";
+            btnLogout.BackColor = Color.MediumPurple;
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.FlatStyle = FlatStyle.Flat;
+            btnLogout.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnLogout.ForeColor = Color.White;
+            btnLogout.Location = new Point(10, 334);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(160, 40);
+            btnLogout.TabIndex = 3;
+            btnLogout.Text = "🚪 Logout";
+            btnLogout.TextAlign = ContentAlignment.MiddleLeft;
+            btnLogout.UseVisualStyleBackColor = false;
             // 
             // btnDashboard
             // 
@@ -88,6 +92,17 @@
             btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
             btnDashboard.UseVisualStyleBackColor = false;
             // 
+            // lblogo
+            // 
+            lblogo.AutoSize = true;
+            lblogo.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblogo.ForeColor = Color.White;
+            lblogo.Location = new Point(20, 25);
+            lblogo.Name = "lblogo";
+            lblogo.Size = new Size(153, 31);
+            lblogo.TabIndex = 0;
+            lblogo.Text = "🌸 BabySkin";
+            // 
             // btnCustomers
             // 
             btnCustomers.BackColor = Color.MediumPurple;
@@ -102,6 +117,7 @@
             btnCustomers.Text = "👥 Customers";
             btnCustomers.TextAlign = ContentAlignment.MiddleLeft;
             btnCustomers.UseVisualStyleBackColor = false;
+            btnCustomers.Click += btnCustomers_Click;
             // 
             // btnSessions
             // 
@@ -133,21 +149,6 @@
             btnPayments.TextAlign = ContentAlignment.MiddleLeft;
             btnPayments.UseVisualStyleBackColor = false;
             // 
-            // btnLogout
-            // 
-            btnLogout.BackColor = Color.MediumPurple;
-            btnLogout.FlatAppearance.BorderSize = 0;
-            btnLogout.FlatStyle = FlatStyle.Flat;
-            btnLogout.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(10, 334);
-            btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(160, 40);
-            btnLogout.TabIndex = 3;
-            btnLogout.Text = "🚪 Logout";
-            btnLogout.TextAlign = ContentAlignment.MiddleLeft;
-            btnLogout.UseVisualStyleBackColor = false;
-            // 
             // mainPanel
             // 
             mainPanel.BackColor = Color.AliceBlue;
@@ -161,67 +162,6 @@
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(1074, 625);
             mainPanel.TabIndex = 4;
-            // 
-            // lbWelcome
-            // 
-            lbWelcome.AutoSize = true;
-            lbWelcome.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbWelcome.ForeColor = Color.DarkSlateGray;
-            lbWelcome.Location = new Point(40, 30);
-            lbWelcome.Name = "lbWelcome";
-            lbWelcome.Size = new Size(446, 54);
-            lbWelcome.TabIndex = 0;
-            lbWelcome.Text = "Welcome Back Admin!";
-            // 
-            // customerCard
-            // 
-            customerCard.BackColor = Color.White;
-            customerCard.Controls.Add(textBox1);
-            customerCard.Controls.Add(lbTotalCustomers);
-            customerCard.Location = new Point(40, 90);
-            customerCard.Name = "customerCard";
-            customerCard.Size = new Size(253, 67);
-            customerCard.TabIndex = 1;
-            // 
-            // lbTotalCustomers
-            // 
-            lbTotalCustomers.AutoSize = true;
-            lbTotalCustomers.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbTotalCustomers.ForeColor = Color.Gray;
-            lbTotalCustomers.Location = new Point(15, 15);
-            lbTotalCustomers.Name = "lbTotalCustomers";
-            lbTotalCustomers.Size = new Size(139, 25);
-            lbTotalCustomers.TabIndex = 0;
-            lbTotalCustomers.Text = "Total Customers";
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(160, 16);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(65, 27);
-            textBox1.TabIndex = 1;
-            // 
-            // lblUpcomingSessions
-            // 
-            lblUpcomingSessions.AutoSize = true;
-            lblUpcomingSessions.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUpcomingSessions.ForeColor = Color.DarkSlateGray;
-            lblUpcomingSessions.Location = new Point(40, 200);
-            lblUpcomingSessions.Name = "lblUpcomingSessions";
-            lblUpcomingSessions.Size = new Size(269, 38);
-            lblUpcomingSessions.TabIndex = 2;
-            lblUpcomingSessions.Text = "Upcoming Sessions";
-            // 
-            // txtSearch
-            // 
-            txtSearch.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearch.ForeColor = Color.Gray;
-            txtSearch.Location = new Point(630, 211);
-            txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(220, 31);
-            txtSearch.TabIndex = 3;
-            txtSearch.Text = "🔍 Search...";
             // 
             // dgvUpcomingSessions
             // 
@@ -250,6 +190,70 @@
             dgvUpcomingSessions.TabIndex = 4;
             dgvUpcomingSessions.CellContentClick += dgvUpcomingSessions_CellContentClick;
             // 
+            // txtSearch
+            // 
+            txtSearch.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtSearch.ForeColor = Color.Gray;
+            txtSearch.Location = new Point(630, 211);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(220, 31);
+            txtSearch.TabIndex = 3;
+            txtSearch.Text = "🔍 Search...";
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            txtSearch.Enter += txtSearch_Enter;
+            txtSearch.Leave += txtSearch_Leave;
+            // 
+            // lblUpcomingSessions
+            // 
+            lblUpcomingSessions.AutoSize = true;
+            lblUpcomingSessions.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblUpcomingSessions.ForeColor = Color.DarkSlateGray;
+            lblUpcomingSessions.Location = new Point(40, 200);
+            lblUpcomingSessions.Name = "lblUpcomingSessions";
+            lblUpcomingSessions.Size = new Size(269, 38);
+            lblUpcomingSessions.TabIndex = 2;
+            lblUpcomingSessions.Text = "Upcoming Sessions";
+            // 
+            // customerCard
+            // 
+            customerCard.BackColor = Color.White;
+            customerCard.Controls.Add(tbTotalCustomers);
+            customerCard.Controls.Add(lbTotalCustomers);
+            customerCard.Location = new Point(40, 90);
+            customerCard.Name = "customerCard";
+            customerCard.Size = new Size(253, 67);
+            customerCard.TabIndex = 1;
+            // 
+            // tbTotalCustomers
+            // 
+            tbTotalCustomers.Location = new Point(160, 16);
+            tbTotalCustomers.Name = "tbTotalCustomers";
+            tbTotalCustomers.ReadOnly = true;
+            tbTotalCustomers.Size = new Size(65, 27);
+            tbTotalCustomers.TabIndex = 1;
+            // 
+            // lbTotalCustomers
+            // 
+            lbTotalCustomers.AutoSize = true;
+            lbTotalCustomers.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbTotalCustomers.ForeColor = Color.Gray;
+            lbTotalCustomers.Location = new Point(15, 15);
+            lbTotalCustomers.Name = "lbTotalCustomers";
+            lbTotalCustomers.Size = new Size(139, 25);
+            lbTotalCustomers.TabIndex = 0;
+            lbTotalCustomers.Text = "Total Customers";
+            // 
+            // lbWelcome
+            // 
+            lbWelcome.AutoSize = true;
+            lbWelcome.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbWelcome.ForeColor = Color.DarkSlateGray;
+            lbWelcome.Location = new Point(40, 30);
+            lbWelcome.Name = "lbWelcome";
+            lbWelcome.Size = new Size(446, 54);
+            lbWelcome.TabIndex = 0;
+            lbWelcome.Text = "Welcome Back Admin!";
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -267,9 +271,9 @@
             sidebarpanel.PerformLayout();
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvUpcomingSessions).EndInit();
             customerCard.ResumeLayout(false);
             customerCard.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvUpcomingSessions).EndInit();
             ResumeLayout(false);
         }
 
@@ -285,7 +289,7 @@
         private Panel mainPanel;
         private Label lbWelcome;
         private Panel customerCard;
-        private TextBox textBox1;
+        private TextBox tbTotalCustomers;
         private Label lbTotalCustomers;
         private DataGridView dgvUpcomingSessions;
         private TextBox txtSearch;

@@ -131,5 +131,14 @@ namespace BabySkin
                 loadCustomers();
             }
         }
+
+        private void btnAddCustomer_Click(object sender, EventArgs e)
+        {
+            addCustomersForm addForm = new addCustomersForm();
+            if (addForm.ShowDialog() == DialogResult.OK)
+            {
+                loadCustomers();
+            }
+        }
     }
 }

@@ -157,6 +157,7 @@
             btnDeleteSelected.TabIndex = 3;
             btnDeleteSelected.Text = "🗑️ Delete Selected";
             btnDeleteSelected.UseVisualStyleBackColor = false;
+            btnDeleteSelected.Click += btnDeleteSelected_Click;
             // 
             // btnEditSelected
             // 

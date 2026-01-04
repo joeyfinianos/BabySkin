@@ -186,5 +186,53 @@ namespace BabySkin
                 MessageBox.Show("Error loading customer data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnDeleteSelected_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a customer to delete", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                DataGridViewRow selectedRow = dgvCustomers.SelectedRows[0];
+                string customerName = selectedRow.Cells["Name"].Value.ToString();
+                int customerId = Convert.ToInt32(selectedRow.Cells["CustomerID"].Value);
+
+                DialogResult result = MessageBox.Show(
+                    $"Are you sure you want to delete customer '{customerName}'?\n\nThis will also delete all their sessions and payments!\n\nThis action cannot be undone!",
+                    "Confirm Delete",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning
+                );
+
+                if (result == DialogResult.OK)
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        string query = "DELETE FROM Customers WHERE CustomerID = @CustomerID";
+
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Customer and all related data deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                loadCustomers();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deleting customer: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

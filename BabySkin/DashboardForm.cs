@@ -2,7 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
-using System.Security.Policy;
+using System.Drawing;
 
 namespace BabySkin
 {
@@ -81,7 +81,7 @@ namespace BabySkin
             this.Hide();
             CustomersManagementForm customersForm = new CustomersManagementForm();
             customersForm.ShowDialog();
-
+            this.Show();
         }
 
         private void btnSessions_Click(object sender, EventArgs e)
@@ -89,7 +89,15 @@ namespace BabySkin
             this.Hide();
             SessionsForm sessionsForm = new SessionsForm();
             sessionsForm.ShowDialog();
+            this.Show();
+        }
 
+        private void btnPayments_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            PaymentsForm paymentsForm = new PaymentsForm();
+            paymentsForm.ShowDialog();
+            this.Show();
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -112,7 +120,10 @@ namespace BabySkin
 
         private void btnViewPayments_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Payments page coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Hide();
+            PaymentsForm paymentsForm = new PaymentsForm();
+            paymentsForm.ShowDialog();
+            this.Show();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -120,13 +131,22 @@ namespace BabySkin
             DialogResult result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                this.Close();
+                Application.Exit();
+            }
+        }
+
+        private void btnLogout_Click_1(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtSearch.Text == "🔍 Search..." || txtSearch.ForeColor == System.Drawing.Color.Gray)
+            if (txtSearch.Text == "🔍 Search..." || txtSearch.ForeColor == Color.Gray)
             {
                 return;
             }
@@ -175,7 +195,7 @@ namespace BabySkin
             if (txtSearch.Text == "🔍 Search...")
             {
                 txtSearch.Text = "";
-                txtSearch.ForeColor = System.Drawing.Color.Black;
+                txtSearch.ForeColor = Color.Black;
             }
         }
 
@@ -184,7 +204,7 @@ namespace BabySkin
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = "🔍 Search...";
-                txtSearch.ForeColor = System.Drawing.Color.Gray;
+                txtSearch.ForeColor = Color.Gray;
                 LoadUpcomingSessions();
             }
         }
@@ -194,28 +214,9 @@ namespace BabySkin
 
         }
 
-        private void btnPayments_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            PaymentsForm paymentsForm = new PaymentsForm();
-            paymentsForm.ShowDialog();
-            this.Show();
-        }
-
-        private void btnLogout_Click_1(object sender, EventArgs e)
-        {
-            this.Hide();
-            LoginForm loginForm = new LoginForm();
-            loginForm.ShowDialog();
-            this.Show();
-        }
-
         private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
-            
-           
-            
         }
     }
 }

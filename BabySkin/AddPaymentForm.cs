@@ -17,8 +17,15 @@ namespace BabySkin
         private void AddPaymentForm_Load(object sender, EventArgs e)
         {
             LoadCustomers();
+            LoadBodyAreas();
+            SetDefaultValues();
+        }
+
+        private void SetDefaultValues()
+        {
             dtpPaymentDate.Value = DateTime.Now;
             nudAmount.Value = 100;
+            nudAmount.DecimalPlaces = 2;
         }
 
         private void LoadCustomers()
@@ -44,42 +51,26 @@ namespace BabySkin
             }
         }
 
-        private void cbCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        private void LoadBodyAreas()
         {
-            if (cbCustomer.SelectedValue != null)
-            {
-                LoadCustomerSessions(Convert.ToInt32(cbCustomer.SelectedValue));
-            }
-        }
+            cbSession.Items.Clear();
+            cbSession.Items.AddRange(new string[] {
+                "Face",
+                "Legs",
+                "Arms",
+                "Back",
+                "Chest",
+                "Underarms",
+                
+                "Full Body",
+                "Hands",
+                "Feet",
+                "Neck",
+                "Shoulders"
+            });
 
-        private void LoadCustomerSessions(int customerId)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = @"SELECT SessionID, BodyArea + ' - ' + CONVERT(VARCHAR, SessionDate, 103) AS SessionInfo 
-                                   FROM LaserSessions 
-                                   WHERE CustomerID = @CustomerID 
-                                   ORDER BY SessionDate DESC";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    cbSession.DisplayMember = "SessionInfo";
-                    cbSession.ValueMember = "SessionID";
-                    cbSession.DataSource = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading sessions: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            if (cbSession.Items.Count > 0)
+                cbSession.SelectedIndex = 0;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -87,36 +78,69 @@ namespace BabySkin
             if (cbCustomer.SelectedValue == null)
             {
                 MessageBox.Show("Please select a customer", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbCustomer.Focus();
                 return;
             }
 
-            if (cbSession.SelectedValue == null)
+            if (cbSession.SelectedItem == null)
             {
-                MessageBox.Show("Please select a session", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a body area", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cbSession.Focus();
                 return;
             }
 
             if (nudAmount.Value <= 0)
             {
-                MessageBox.Show("Please enter a valid amount", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter a valid amount greater than 0", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                nudAmount.Focus();
                 return;
             }
 
             try
             {
+                int customerId = Convert.ToInt32(cbCustomer.SelectedValue);
+                string bodyArea = cbSession.SelectedItem.ToString();
+                decimal amount = nudAmount.Value;
+                DateTime paymentDate = dtpPaymentDate.Value;
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    string query = @"INSERT INTO Payments (CustomerID, SessionID, Amount, PaymentDate) 
-                                   VALUES (@CustomerID, @SessionID, @Amount, @PaymentDate)";
+                    // Find an existing session for this customer and body area
+                    string findSessionQuery = @"SELECT TOP 1 SessionID 
+                                       FROM LaserSessions 
+                                       WHERE CustomerID = @CustomerID AND BodyArea = @BodyArea 
+                                       ORDER BY SessionDate DESC";
 
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    int sessionId = 0;
+
+                    using (SqlCommand cmd = new SqlCommand(findSessionQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("@CustomerID", cbCustomer.SelectedValue);
-                        cmd.Parameters.AddWithValue("@SessionID", cbSession.SelectedValue);
-                        cmd.Parameters.AddWithValue("@Amount", nudAmount.Value);
-                        cmd.Parameters.AddWithValue("@PaymentDate", dtpPaymentDate.Value);
+                        cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                        cmd.Parameters.AddWithValue("@BodyArea", bodyArea);
+
+                        object result = cmd.ExecuteScalar();
+
+                        if (result == null)
+                        {
+                            MessageBox.Show($"No session found for this customer and body area ({bodyArea}).\n\nPlease create a session first before adding a payment.", "No Session Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        sessionId = Convert.ToInt32(result);
+                    }
+
+                    // Now insert the payment
+                    string insertPaymentQuery = @"INSERT INTO Payments (CustomerID, SessionID, Amount, PaymentDate) 
+                                         VALUES (@CustomerID, @SessionID, @Amount, @PaymentDate)";
+
+                    using (SqlCommand cmd = new SqlCommand(insertPaymentQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                        cmd.Parameters.AddWithValue("@SessionID", sessionId);
+                        cmd.Parameters.AddWithValue("@Amount", amount);
+                        cmd.Parameters.AddWithValue("@PaymentDate", paymentDate);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
 
@@ -135,7 +159,7 @@ namespace BabySkin
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error saving payment: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error saving payment: " + ex.Message + "\n\n" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -145,7 +169,7 @@ namespace BabySkin
             this.Close();
         }
 
-        private void btnSave_Click_1(object sender, EventArgs e)
+        private void cbSession_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

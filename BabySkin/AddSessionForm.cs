@@ -53,8 +53,7 @@ namespace BabySkin
                 "Arms",
                 "Back",
                 "Chest",
-                "Underarms",
-                "Bikini",
+                "Underarms",               
                 "Full Body",
                 "Hands",
                 "Feet",
@@ -68,19 +67,19 @@ namespace BabySkin
 
         private void SetDefaultValues()
         {
-            
+
             dtpSessionDate.Value = DateTime.Now;
 
-            
+
             nudEnergyLevel.Value = 18;
 
-         
+
             nudDuration.Value = 30;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+
             if (cbCustomer.SelectedValue == null)
             {
                 MessageBox.Show("Please select a customer", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -88,7 +87,7 @@ namespace BabySkin
                 return;
             }
 
-            
+
             if (cbBodyArea.SelectedItem == null)
             {
                 MessageBox.Show("Please select a body area", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -146,6 +145,11 @@ namespace BabySkin
         }
 
         private void AddSessionForm_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panelNewSession_Paint(object sender, PaintEventArgs e)
         {
 
         }

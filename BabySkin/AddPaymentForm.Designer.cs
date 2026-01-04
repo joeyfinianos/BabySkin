@@ -87,10 +87,12 @@
             cbSession.DropDownStyle = ComboBoxStyle.DropDownList;
             cbSession.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cbSession.FormattingEnabled = true;
+            cbSession.Items.AddRange(new object[] { "Chest", "Face", "Shoulders", "Back", "Legs" });
             cbSession.Location = new Point(22, 191);
             cbSession.Name = "cbSession";
             cbSession.Size = new Size(640, 33);
             cbSession.TabIndex = 5;
+            cbSession.SelectedIndexChanged += cbSession_SelectedIndexChanged;
             // 
             // nudAmount
             // 
@@ -141,7 +143,7 @@
             btnSave.TabIndex = 12;
             btnSave.Text = "💾 Save Payment";
             btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += btnSave_Click_1;
+            btnSave.Click += btnSave_Click;
             // 
             // AddPaymentForm
             // 

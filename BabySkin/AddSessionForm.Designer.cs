@@ -67,6 +67,7 @@
             panelNewSession.Name = "panelNewSession";
             panelNewSession.Size = new Size(700, 450);
             panelNewSession.TabIndex = 3;
+            panelNewSession.Paint += panelNewSession_Paint;
             // 
             // panel1
             // 

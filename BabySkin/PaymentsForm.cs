@@ -8,9 +8,6 @@ namespace BabySkin
 {
     public partial class PaymentsForm : Form
     {
-        private int userId;
-        private string fullName;
-
         private string connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
 
         public PaymentsForm()
@@ -53,6 +50,8 @@ namespace BabySkin
                     {
                         dgvAllPayments.Columns["PaymentID"].Visible = false;
                     }
+
+                    CalculateTotalAmount();
                 }
             }
             catch (Exception ex)
@@ -61,43 +60,23 @@ namespace BabySkin
             }
         }
 
-        private void SearchPayments(string searchText)
+        private void CalculateTotalAmount()
         {
-            try
+            decimal total = 0;
+
+            foreach (DataGridViewRow row in dgvAllPayments.Rows)
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                if (row.Cells["Amount"].Value != null)
                 {
-                    conn.Open();
-                    string query = @"
-                        SELECT 
-                            p.PaymentID,
-                            c.FullName AS Customer,
-                            ls.BodyArea AS [Body Area],
-                            p.Amount,
-                            p.PaymentDate AS [Payment Date]
-                        FROM Payments p
-                        INNER JOIN Customers c ON p.CustomerID = c.CustomerID
-                        INNER JOIN LaserSessions ls ON p.SessionID = ls.SessionID
-                        WHERE c.FullName LIKE @Search OR ls.BodyArea LIKE @Search
-                        ORDER BY p.PaymentDate DESC";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Search", "%" + searchText + "%");
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dgvAllPayments.DataSource = dt;
-
-                    if (dgvAllPayments.Columns["PaymentID"] != null)
-                    {
-                        dgvAllPayments.Columns["PaymentID"].Visible = false;
-                    }
+                    total += Convert.ToDecimal(row.Cells["Amount"].Value);
                 }
             }
-            catch (Exception ex)
+
+            // Display total in a label
+            if (this.Controls.Find("lblTotalAmount", true).Length > 0)
             {
-                MessageBox.Show("Error searching: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Label lblTotal = (Label)this.Controls.Find("lblTotalAmount", true)[0];
+                lblTotal.Text = $"Total: ${total:N2}";
             }
         }
 
@@ -106,33 +85,6 @@ namespace BabySkin
             AddPaymentForm addForm = new AddPaymentForm();
             if (addForm.ShowDialog() == DialogResult.OK)
             {
-                LoadAllPayments();
-            }
-        }
-
-        private void txtSearchPayments_TextChanged(object sender, EventArgs e)
-        {
-            if (txtSearchPayments.Text == "🔍 Search payments..." || txtSearchPayments.ForeColor == Color.Gray)
-                return;
-
-            SearchPayments(txtSearchPayments.Text);
-        }
-
-        private void txtSearchPayments_Enter(object sender, EventArgs e)
-        {
-            if (txtSearchPayments.Text == "🔍 Search payments...")
-            {
-                txtSearchPayments.Text = "";
-                txtSearchPayments.ForeColor = Color.Black;
-            }
-        }
-
-        private void txtSearchPayments_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtSearchPayments.Text))
-            {
-                txtSearchPayments.Text = "🔍 Search payments...";
-                txtSearchPayments.ForeColor = Color.Gray;
                 LoadAllPayments();
             }
         }
@@ -151,10 +103,9 @@ namespace BabySkin
 
         private void btnSessions_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Close();
             SessionsForm sessionsForm = new SessionsForm();
             sessionsForm.ShowDialog();
-            this.Show();
         }
 
         private void btnPayments_Click(object sender, EventArgs e)
@@ -167,56 +118,8 @@ namespace BabySkin
             DialogResult result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                this.Close();
+                Application.Exit();
             }
-        }
-
-        private void btnDashboard_Click_1(object sender, EventArgs e)
-        {
-            this.Hide();
-            DashboardForm dashboard = new DashboardForm(this.userId, this.fullName);
-            dashboard.ShowDialog();
-
-
-
-
-        }
-
-        private void btnCustomers_Click_1(object sender, EventArgs e)
-        {
-            this.Close();
-            CustomersManagementForm customersForm = new CustomersManagementForm();
-            customersForm.ShowDialog();
-            this.Show();
-        }
-
-        private void btnPayments_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnSessions_Click_1(object sender, EventArgs e)
-        {
-            this.Hide();
-            SessionsForm sessions = new SessionsForm();
-            sessions.ShowDialog();
-        }
-
-        private void btnAddPayment_Click_1(object sender, EventArgs e)
-        {
-            AddPaymentForm addForm = new AddPaymentForm();
-            if (addForm.ShowDialog() == DialogResult.OK)
-            {
-                LoadAllPayments();
-            }
-        }
-
-        private void btnLogout_Click_1(object sender, EventArgs e)
-        {
-            this.Hide();
-            LoginForm loginForm = new LoginForm();
-            loginForm.ShowDialog();
-            this.Show();
         }
     }
 }

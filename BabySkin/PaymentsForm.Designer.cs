@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             btnPayments = new Button();
             btnSessions = new Button();
             btnCustomers = new Button();
@@ -37,8 +37,8 @@
             btnDashboard = new Button();
             lblogo = new Label();
             mainPanel = new Panel();
+            lblTotalAmount = new Label();
             dgvAllPayments = new DataGridView();
-            txtSearchPayments = new TextBox();
             btnAddPayment = new Button();
             label1 = new Label();
             sidebarpanel.SuspendLayout();
@@ -60,7 +60,6 @@
             btnPayments.Text = "💳 Payments";
             btnPayments.TextAlign = ContentAlignment.MiddleLeft;
             btnPayments.UseVisualStyleBackColor = false;
-            btnPayments.Click += btnPayments_Click_1;
             // 
             // btnSessions
             // 
@@ -76,7 +75,7 @@
             btnSessions.Text = "📋 Sessions";
             btnSessions.TextAlign = ContentAlignment.MiddleLeft;
             btnSessions.UseVisualStyleBackColor = false;
-            btnSessions.Click += btnSessions_Click_1;
+            btnSessions.Click += btnSessions_Click;
             // 
             // btnCustomers
             // 
@@ -92,7 +91,7 @@
             btnCustomers.Text = "👥 Customers";
             btnCustomers.TextAlign = ContentAlignment.MiddleLeft;
             btnCustomers.UseVisualStyleBackColor = false;
-            btnCustomers.Click += btnCustomers_Click_1;
+            btnCustomers.Click += btnCustomers_Click;
             // 
             // sidebarpanel
             // 
@@ -123,7 +122,7 @@
             btnLogout.Text = "🚪 Logout";
             btnLogout.TextAlign = ContentAlignment.MiddleLeft;
             btnLogout.UseVisualStyleBackColor = false;
-            btnLogout.Click += btnLogout_Click_1;
+            btnLogout.Click += btnLogout_Click;
             // 
             // btnDashboard
             // 
@@ -139,7 +138,7 @@
             btnDashboard.Text = "🏠 Dashboard";
             btnDashboard.TextAlign = ContentAlignment.MiddleLeft;
             btnDashboard.UseVisualStyleBackColor = false;
-            btnDashboard.Click += btnDashboard_Click_1;
+            btnDashboard.Click += btnDashboard_Click;
             // 
             // lblogo
             // 
@@ -154,8 +153,8 @@
             // 
             // mainPanel
             // 
+            mainPanel.Controls.Add(lblTotalAmount);
             mainPanel.Controls.Add(dgvAllPayments);
-            mainPanel.Controls.Add(txtSearchPayments);
             mainPanel.Controls.Add(btnAddPayment);
             mainPanel.Controls.Add(label1);
             mainPanel.Dock = DockStyle.Fill;
@@ -164,17 +163,30 @@
             mainPanel.Size = new Size(1188, 673);
             mainPanel.TabIndex = 5;
             // 
+            // lblTotalAmount
+            // 
+            lblTotalAmount.AutoSize = true;
+            lblTotalAmount.BackColor = Color.Transparent;
+            lblTotalAmount.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTotalAmount.ForeColor = Color.DarkGreen;
+            lblTotalAmount.Location = new Point(987, 613);
+            lblTotalAmount.Name = "lblTotalAmount";
+            lblTotalAmount.Size = new Size(169, 38);
+            lblTotalAmount.TabIndex = 6;
+            lblTotalAmount.Text = "Total: $0.00";
+            lblTotalAmount.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // dgvAllPayments
             // 
             dgvAllPayments.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.MediumPurple;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvAllPayments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.MediumPurple;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvAllPayments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvAllPayments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvAllPayments.EnableHeadersVisualStyles = false;
             dgvAllPayments.Location = new Point(30, 160);
@@ -184,15 +196,6 @@
             dgvAllPayments.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAllPayments.Size = new Size(1150, 540);
             dgvAllPayments.TabIndex = 3;
-            // 
-            // txtSearchPayments
-            // 
-            txtSearchPayments.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearchPayments.Location = new Point(30, 90);
-            txtSearchPayments.Name = "txtSearchPayments";
-            txtSearchPayments.Size = new Size(400, 31);
-            txtSearchPayments.TabIndex = 2;
-            txtSearchPayments.Text = "🔍 Search payments...";
             // 
             // btnAddPayment
             // 
@@ -207,7 +210,7 @@
             btnAddPayment.TabIndex = 1;
             btnAddPayment.Text = "➕ Add New Payment";
             btnAddPayment.UseVisualStyleBackColor = false;
-            btnAddPayment.Click += btnAddPayment_Click_1;
+            btnAddPayment.Click += btnAddPayment_Click;
             // 
             // label1
             // 
@@ -253,6 +256,6 @@
         private Label label1;
         private Button btnAddPayment;
         private DataGridView dgvAllPayments;
-        private TextBox txtSearchPayments;
+        private Label lblTotalAmount;
     }
 }

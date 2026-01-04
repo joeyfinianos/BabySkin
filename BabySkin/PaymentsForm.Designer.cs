@@ -41,6 +41,7 @@
             dgvAllPayments = new DataGridView();
             btnAddPayment = new Button();
             label1 = new Label();
+            btnDeletePayment = new Button();
             sidebarpanel.SuspendLayout();
             mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvAllPayments).BeginInit();
@@ -153,6 +154,7 @@
             // 
             // mainPanel
             // 
+            mainPanel.Controls.Add(btnDeletePayment);
             mainPanel.Controls.Add(lblTotalAmount);
             mainPanel.Controls.Add(dgvAllPayments);
             mainPanel.Controls.Add(btnAddPayment);
@@ -223,6 +225,21 @@
             label1.TabIndex = 0;
             label1.Text = "Payments";
             // 
+            // btnDeletePayment
+            // 
+            btnDeletePayment.BackColor = Color.Tomato;
+            btnDeletePayment.Cursor = Cursors.Hand;
+            btnDeletePayment.FlatAppearance.BorderSize = 0;
+            btnDeletePayment.FlatStyle = FlatStyle.Flat;
+            btnDeletePayment.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnDeletePayment.Location = new Point(500, 25);
+            btnDeletePayment.Name = "btnDeletePayment";
+            btnDeletePayment.Size = new Size(200, 45);
+            btnDeletePayment.TabIndex = 7;
+            btnDeletePayment.Text = "🗑️ Delete Payment";
+            btnDeletePayment.UseVisualStyleBackColor = false;
+            btnDeletePayment.Click += btnDeletePayment_Click;
+            // 
             // PaymentsForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -257,5 +274,6 @@
         private Button btnAddPayment;
         private DataGridView dgvAllPayments;
         private Label lblTotalAmount;
+        private Button btnDeletePayment;
     }
 }

@@ -121,5 +121,64 @@ namespace BabySkin
                 Application.Exit();
             }
         }
+
+        private void btnDeletePayment_Click(object sender, EventArgs e)
+        {
+            if (dgvAllPayments.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a payment to delete", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                DataGridViewRow selectedRow = dgvAllPayments.SelectedRows[0];
+
+                int paymentId = Convert.ToInt32(selectedRow.Cells["PaymentID"].Value);
+                string customerName = selectedRow.Cells["Customer"].Value.ToString();
+                string bodyArea = selectedRow.Cells["Body Area"].Value.ToString();
+                decimal amount = Convert.ToDecimal(selectedRow.Cells["Amount"].Value);
+
+                DialogResult result = MessageBox.Show(
+                    $"Are you sure you want to delete this payment?\n\n" +
+                    $"Customer: {customerName}\n" +
+                    $"Body Area: {bodyArea}\n" +
+                    $"Amount: ${amount:N2}\n\n" +
+                    $"This action cannot be undone!",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (result == DialogResult.Yes)
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        string query = "DELETE FROM Payments WHERE PaymentID = @PaymentID";
+
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@PaymentID", paymentId);
+                            int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Payment deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                LoadAllPayments();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Failed to delete payment", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error deleting payment: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

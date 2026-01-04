@@ -106,7 +106,7 @@
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 10.2F);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(10, 620);
+            btnLogout.Location = new Point(10, 334);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(160, 40);
             btnLogout.TabIndex = 3;

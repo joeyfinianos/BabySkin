@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using Microsoft.Data.SqlClient;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace BabySkin
@@ -44,8 +43,7 @@ namespace BabySkin
                         FROM LaserSessions ls
                         INNER JOIN Customers c ON ls.CustomerID = c.CustomerID
                         WHERE ls.SessionDate >= CAST(GETDATE() AS DATE)
-                        ORDER BY ls.SessionDate
-                    ";
+                        ORDER BY ls.SessionDate";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -77,9 +75,57 @@ namespace BabySkin
             }
         }
 
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            CustomersManagementForm customersForm = new CustomersManagementForm();
+            customersForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnSessions_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            SessionsForm sessionsForm = new SessionsForm();
+            sessionsForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnAddCustomer_Click(object sender, EventArgs e)
+        {
+            addCustomersForm addForm = new addCustomersForm();
+            if (addForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadStatistics();
+            }
+        }
+
+        private void btnRecordSession_Click(object sender, EventArgs e)
+        {
+            AddSessionForm addForm = new AddSessionForm();
+            if (addForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadUpcomingSessions();
+            }
+        }
+
+        private void btnViewPayments_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Payments page coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txtSearch.Text == "🔍 Search..." || txtSearch.ForeColor == Color.Gray)
+            if (txtSearch.Text == "🔍 Search..." || txtSearch.ForeColor == System.Drawing.Color.Gray)
             {
                 return;
             }
@@ -106,8 +152,7 @@ namespace BabySkin
                         AND (c.FullName LIKE @Search 
                              OR c.Phone LIKE @Search 
                              OR ls.BodyArea LIKE @Search)
-                        ORDER BY ls.SessionDate
-                    ";
+                        ORDER BY ls.SessionDate";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Search", "%" + searchText + "%");
@@ -129,7 +174,7 @@ namespace BabySkin
             if (txtSearch.Text == "🔍 Search...")
             {
                 txtSearch.Text = "";
-                txtSearch.ForeColor = Color.Black;
+                txtSearch.ForeColor = System.Drawing.Color.Black;
             }
         }
 
@@ -138,7 +183,7 @@ namespace BabySkin
             if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = "🔍 Search...";
-                txtSearch.ForeColor = Color.Gray;
+                txtSearch.ForeColor = System.Drawing.Color.Gray;
                 LoadUpcomingSessions();
             }
         }
@@ -146,14 +191,6 @@ namespace BabySkin
         private void dgvUpcomingSessions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-        }
-
-        private void btnCustomers_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            CustomersManagementForm customersForm = new CustomersManagementForm();
-            customersForm.ShowDialog();
-            this.Show();
         }
     }
 }

@@ -231,6 +231,7 @@
             btnSessions.Text = "📋 Sessions";
             btnSessions.TextAlign = ContentAlignment.MiddleLeft;
             btnSessions.UseVisualStyleBackColor = false;
+            btnSessions.Click += btnSessions_Click;
             // 
             // btnCustomers
             // 

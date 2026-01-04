@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             sidebarpanel = new Panel();
             btnLogout = new Button();
             btnDashboard = new Button();
@@ -133,6 +133,7 @@
             btnSessions.Text = "📋 Sessions";
             btnSessions.TextAlign = ContentAlignment.MiddleLeft;
             btnSessions.UseVisualStyleBackColor = false;
+            btnSessions.Click += btnSessions_Click;
             // 
             // btnPayments
             // 
@@ -169,14 +170,14 @@
             dgvUpcomingSessions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUpcomingSessions.BackgroundColor = Color.White;
             dgvUpcomingSessions.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.MediumPurple;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvUpcomingSessions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.MediumPurple;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvUpcomingSessions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvUpcomingSessions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUpcomingSessions.EnableHeadersVisualStyles = false;
             dgvUpcomingSessions.Location = new Point(40, 245);

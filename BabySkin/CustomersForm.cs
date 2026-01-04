@@ -1,52 +1,33 @@
 ﻿using System;
 using System.Data;
-using Microsoft.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
 
 namespace BabySkin
 {
     public partial class CustomersManagementForm : Form
     {
-        private String connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
-
-
-
+        private string connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
 
         public CustomersManagementForm()
         {
             InitializeComponent();
         }
 
-        private void btnCustomers_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnDashboard_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void CustomersManagementForm_Load(object sender, EventArgs e)
         {
-            loadCustomers();
-
+            LoadCustomers();
         }
-        private void loadCustomers()
+
+        private void LoadCustomers()
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = @"SELECT 
-                                        CustomerID, 
-                                        FullName AS Name, 
-                                        Phone, 
-                                        Gender, 
-                                        SkinType AS [Skin Type] 
-                                     FROM Customers 
-                                     ORDER BY FullName";
+                    string query = "SELECT CustomerID, FullName AS Name, Phone, Gender, SkinType AS [Skin Type] FROM Customers ORDER BY FullName";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
@@ -65,17 +46,6 @@ namespace BabySkin
             }
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-            if (txtSearch.Text == "🔍 Search..." || txtSearch.ForeColor == System.Drawing.Color.Gray)
-            {
-                return;
-            }
-            SearchCustomers(txtSearch.Text);
-        }
-
-
-
         private void SearchCustomers(string searchText)
         {
             try
@@ -83,15 +53,11 @@ namespace BabySkin
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = @"SELECT 
-                                CustomerID, 
-                                FullName AS Name, 
-                                Phone, 
-                                Gender, 
-                                SkinType AS [Skin Type] 
-                             FROM Customers 
-                             WHERE FullName LIKE @Search OR Phone LIKE @Search 
-                             ORDER BY FullName";
+                    string query = @"
+                        SELECT CustomerID, FullName AS Name, Phone, Gender, SkinType AS [Skin Type] 
+                        FROM Customers 
+                        WHERE FullName LIKE @Search OR Phone LIKE @Search 
+                        ORDER BY FullName";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Search", "%" + searchText + "%");
@@ -113,6 +79,15 @@ namespace BabySkin
             }
         }
 
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (txtSearch.Text == "🔍 Search..." || txtSearch.ForeColor == Color.Gray)
+            {
+                return;
+            }
+            SearchCustomers(txtSearch.Text);
+        }
+
         private void txtSearch_Enter(object sender, EventArgs e)
         {
             if (txtSearch.Text == "🔍 Search...")
@@ -128,7 +103,7 @@ namespace BabySkin
             {
                 txtSearch.Text = "🔍 Search...";
                 txtSearch.ForeColor = Color.Gray;
-                loadCustomers();
+                LoadCustomers();
             }
         }
 
@@ -137,7 +112,7 @@ namespace BabySkin
             addCustomersForm addForm = new addCustomersForm();
             if (addForm.ShowDialog() == DialogResult.OK)
             {
-                loadCustomers();
+                LoadCustomers();
             }
         }
 
@@ -178,7 +153,7 @@ namespace BabySkin
 
                 if (editForm.ShowDialog() == DialogResult.OK)
                 {
-                    loadCustomers();
+                    LoadCustomers();
                 }
             }
             catch (Exception ex)
@@ -223,7 +198,7 @@ namespace BabySkin
                             if (rowsAffected > 0)
                             {
                                 MessageBox.Show("Customer and all related data deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                loadCustomers();
+                                LoadCustomers();
                             }
                         }
                     }
@@ -232,6 +207,45 @@ namespace BabySkin
             catch (Exception ex)
             {
                 MessageBox.Show("Error deleting customer: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvCustomers_SelectionChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+       
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnSessions_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            SessionsForm sessionsForm = new SessionsForm();
+            sessionsForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnPayments_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Payments page coming soon!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to logout?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
             }
         }
     }

@@ -140,5 +140,51 @@ namespace BabySkin
                 loadCustomers();
             }
         }
+
+        private void btnEditSelected_Click(object sender, EventArgs e)
+        {
+            if (dgvCustomers.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a customer to edit", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                DataGridViewRow selectedRow = dgvCustomers.SelectedRows[0];
+
+                int customerId = Convert.ToInt32(selectedRow.Cells["CustomerID"].Value);
+                string fullName = selectedRow.Cells["Name"].Value.ToString();
+                string phone = selectedRow.Cells["Phone"].Value.ToString();
+                string gender = selectedRow.Cells["Gender"].Value.ToString();
+                string skinType = selectedRow.Cells["Skin Type"].Value.ToString();
+
+                string notes = "";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Notes FROM Customers WHERE CustomerID = @CustomerID";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@CustomerID", customerId);
+
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        notes = result.ToString();
+                    }
+                }
+
+                addCustomersForm editForm = new addCustomersForm(customerId, fullName, phone, gender, skinType, notes);
+
+                if (editForm.ShowDialog() == DialogResult.OK)
+                {
+                    loadCustomers();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading customer data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

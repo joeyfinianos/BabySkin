@@ -7,11 +7,32 @@ namespace BabySkin
     public partial class addCustomersForm : Form
     {
         private string connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
+        private int? customerId = null;
+        private bool isEditMode = false;
 
         public addCustomersForm()
         {
             InitializeComponent();
             LoadComboBoxes();
+            this.Text = "Add New Customer";
+        }
+
+        public addCustomersForm(int customerId, string fullName, string phone, string gender, string skinType, string notes)
+        {
+            InitializeComponent();
+            LoadComboBoxes();
+
+            this.customerId = customerId;
+            this.isEditMode = true;
+            this.Text = "Edit Customer";
+
+            txtFullName.Text = fullName;
+            txtPhone.Text = phone;
+            cbGender.SelectedItem = gender;
+            cbSkinType.SelectedItem = skinType;
+            txtNotes.Text = notes;
+
+            btnSave.Text = "💾 Update Customer";
         }
 
         private void LoadComboBoxes()
@@ -44,9 +65,23 @@ namespace BabySkin
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+                    string query;
 
-                    string query = @"INSERT INTO Customers (FullName, Phone, Gender, SkinType, Notes) 
-                                   VALUES (@FullName, @Phone, @Gender, @SkinType, @Notes)";
+                    if (isEditMode)
+                    {
+                        query = @"UPDATE Customers 
+                                SET FullName = @FullName, 
+                                    Phone = @Phone, 
+                                    Gender = @Gender, 
+                                    SkinType = @SkinType, 
+                                    Notes = @Notes 
+                                WHERE CustomerID = @CustomerID";
+                    }
+                    else
+                    {
+                        query = @"INSERT INTO Customers (FullName, Phone, Gender, SkinType, Notes) 
+                                VALUES (@FullName, @Phone, @Gender, @SkinType, @Notes)";
+                    }
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -56,35 +91,36 @@ namespace BabySkin
                         cmd.Parameters.AddWithValue("@SkinType", cbSkinType.SelectedItem.ToString());
                         cmd.Parameters.AddWithValue("@Notes", txtNotes.Text.Trim());
 
+                        if (isEditMode)
+                        {
+                            cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                        }
+
                         int rowsAffected = cmd.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Customer added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            string message = isEditMode ? "Customer updated successfully!" : "Customer added successfully!";
+                            MessageBox.Show(message, "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             this.DialogResult = DialogResult.OK;
                             this.Close();
                         }
                         else
                         {
-                            MessageBox.Show("Failed to add customer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Failed to save customer", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error saving customer: " + ex.Message + "\n\n" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error saving customer: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
-        private void btnCancel_Click_1(object sender, EventArgs e)
-        {
             this.Close();
         }
     }

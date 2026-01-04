@@ -172,6 +172,7 @@
             btnEditSelected.TabIndex = 2;
             btnEditSelected.Text = "✏️ Edit Selected";
             btnEditSelected.UseVisualStyleBackColor = false;
+            btnEditSelected.Click += btnEditSelected_Click;
             // 
             // btnAddCustomer
             // 

@@ -138,6 +138,8 @@
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "BabySkin - Login";
+            FormClosing += LoginForm_FormClosing;
+            Load += LoginForm_Load;
             panelLogin.ResumeLayout(false);
             panelLogin.PerformLayout();
             ResumeLayout(false);

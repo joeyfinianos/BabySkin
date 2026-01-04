@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
+using System.Security.Policy;
 
 namespace BabySkin
 {
@@ -80,7 +81,7 @@ namespace BabySkin
             this.Hide();
             CustomersManagementForm customersForm = new CustomersManagementForm();
             customersForm.ShowDialog();
-            this.Show();
+
         }
 
         private void btnSessions_Click(object sender, EventArgs e)
@@ -88,7 +89,7 @@ namespace BabySkin
             this.Hide();
             SessionsForm sessionsForm = new SessionsForm();
             sessionsForm.ShowDialog();
-            this.Show();
+
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -191,6 +192,30 @@ namespace BabySkin
         private void dgvUpcomingSessions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void btnPayments_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            PaymentsForm paymentsForm = new PaymentsForm();
+            paymentsForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnLogout_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            LoginForm loginForm = new LoginForm();
+            loginForm.ShowDialog();
+            this.Show();
+        }
+
+        private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+            
+           
+            
         }
     }
 }

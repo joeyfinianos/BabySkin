@@ -6,8 +6,13 @@ using System.Windows.Forms;
 
 namespace BabySkin
 {
+    
+
     public partial class SessionsForm : Form
     {
+        private int userId;
+        private string fullName;
+
         private string connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
 
         public SessionsForm()
@@ -138,14 +143,18 @@ namespace BabySkin
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            DashboardForm dashboard = new DashboardForm(this.userId,this.fullName);
+            dashboard.ShowDialog();
+
         }
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();            
             CustomersManagementForm customersForm = new CustomersManagementForm();
             customersForm.ShowDialog();
+            
         }
 
         private void btnSessions_Click(object sender, EventArgs e)
@@ -182,6 +191,22 @@ namespace BabySkin
             {
                 SearchSessions(txtSearchSessions.Text);
             }
+        }
+
+        private void btnPayments_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            PaymentsForm paymentsForm = new PaymentsForm();
+            paymentsForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnLogout_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            LoginForm loginForm = new LoginForm();
+            loginForm.ShowDialog();
+            this.Show();
         }
     }
 }

@@ -68,19 +68,19 @@ namespace BabySkin
 
         private void SetDefaultValues()
         {
-            // Set default date to today
+            
             dtpSessionDate.Value = DateTime.Now;
 
-            // Set default energy level to 18
+            
             nudEnergyLevel.Value = 18;
 
-            // Set default duration to 30 minutes
+         
             nudDuration.Value = 30;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Validate customer selection
+            
             if (cbCustomer.SelectedValue == null)
             {
                 MessageBox.Show("Please select a customer", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -88,7 +88,7 @@ namespace BabySkin
                 return;
             }
 
-            // Validate body area selection
+            
             if (cbBodyArea.SelectedItem == null)
             {
                 MessageBox.Show("Please select a body area", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.Data.SqlClient;
 
 namespace BabySkin
 {
     public partial class CustomersManagementForm : Form
     {
+        private int userId;
+        private string fullName;
+
         private string connectionString = @"Data Source=DESKTOP-CNQIILR\SQLEXPRESS;Initial Catalog=db_BabySkin;Integrated Security=True;TrustServerCertificate=True";
 
         public CustomersManagementForm()
@@ -212,19 +216,23 @@ namespace BabySkin
 
         private void dgvCustomers_SelectionChanged(object sender, EventArgs e)
         {
-            
+
         }
 
-       
+
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
+            DashboardForm dashboard = new DashboardForm(userId, fullName);
+            dashboard.ShowDialog();
+            this.Show();
+
         }
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnSessions_Click(object sender, EventArgs e)
@@ -232,7 +240,7 @@ namespace BabySkin
             this.Hide();
             SessionsForm sessionsForm = new SessionsForm();
             sessionsForm.ShowDialog();
-            this.Show();
+            
         }
 
         private void btnPayments_Click(object sender, EventArgs e)
@@ -247,6 +255,22 @@ namespace BabySkin
             {
                 this.Close();
             }
+        }
+
+        private void btnPayments_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            PaymentsForm paymentsForm = new PaymentsForm();
+            paymentsForm.ShowDialog();
+            this.Show();
+        }
+
+        private void btnLogout_Click_1(object sender, EventArgs e)
+        {
+            this.Hide();
+            LoginForm loginForm = new LoginForm();
+            loginForm.ShowDialog();
+            this.Show();
         }
     }
 }

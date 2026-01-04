@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             sidebarpanel = new Panel();
             btnLogout = new Button();
             btnDashboard = new Button();
@@ -76,6 +76,7 @@
             btnLogout.Text = "🚪 Logout";
             btnLogout.TextAlign = ContentAlignment.MiddleLeft;
             btnLogout.UseVisualStyleBackColor = false;
+            btnLogout.Click += btnLogout_Click_1;
             // 
             // btnDashboard
             // 
@@ -149,6 +150,7 @@
             btnPayments.Text = "💳 Payments";
             btnPayments.TextAlign = ContentAlignment.MiddleLeft;
             btnPayments.UseVisualStyleBackColor = false;
+            btnPayments.Click += btnPayments_Click;
             // 
             // mainPanel
             // 
@@ -170,14 +172,14 @@
             dgvUpcomingSessions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUpcomingSessions.BackgroundColor = Color.White;
             dgvUpcomingSessions.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.MediumPurple;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvUpcomingSessions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.MediumPurple;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvUpcomingSessions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvUpcomingSessions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUpcomingSessions.EnableHeadersVisualStyles = false;
             dgvUpcomingSessions.Location = new Point(40, 245);
@@ -266,7 +268,9 @@
             Controls.Add(btnCustomers);
             Controls.Add(sidebarpanel);
             Name = "DashboardForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "DashboardForm";
+            FormClosing += DashboardForm_FormClosing;
             Load += DashboardForm_Load;
             sidebarpanel.ResumeLayout(false);
             sidebarpanel.PerformLayout();

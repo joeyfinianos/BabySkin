@@ -48,6 +48,7 @@
             btnPayments.Text = "💳 Payments";
             btnPayments.TextAlign = ContentAlignment.MiddleLeft;
             btnPayments.UseVisualStyleBackColor = false;
+            btnPayments.Click += btnPayments_Click_1;
             // 
             // btnSessions
             // 
@@ -112,6 +113,7 @@
             btnLogout.Text = "🚪 Logout";
             btnLogout.TextAlign = ContentAlignment.MiddleLeft;
             btnLogout.UseVisualStyleBackColor = false;
+            btnLogout.Click += btnLogout_Click_1;
             // 
             // btnDashboard
             // 
